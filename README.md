@@ -1,8 +1,6 @@
 <p align="center">
-<img src="https://i.imgur.com/Wdp5QWg.png" width="600" />
+<img src="https://i.imgur.com/Wdp5QWg.png" width="750" />
 </p>
-<h1 align="center">Fenrir</h1>
-
 K8s admission controller written in Golang with Fiber framework. 
 </br>
 This admission controller target is to ensure k8s best practices are kept.
