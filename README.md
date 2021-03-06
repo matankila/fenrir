@@ -1,5 +1,5 @@
 <p align="center">
-<img src="https://i.imgur.com/Wdp5QWg.png" width="300" />
+<img src="https://i.imgur.com/Wdp5QWg.png" width="600" />
 </p>
 <h1 align="center">Fenrir</h1>
 
