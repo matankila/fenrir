@@ -12,26 +12,59 @@ This admission controller target is to ensure k8s best practices are kept.
 
 ## Configurable
 the admission controller is configurable:
-### General config:
+### Environment vars config:
 * `LOG_LVL, default is info.`
 * `PORT, default is 8080.`
 * `OUTPUT, default is stdout.`
-* `LOGGER_NAME, default is github.com.matankila.fenrir.logger`
-### Pod Policy config:
-* `POD_LIVENESS_READINESS_CHECK, default is true.`
-* `POD_RESTRICTED_NS_CHECK, default is true.`
-* `POD_RUN_AS_NON_ROOT_CHECK, default is false.`
-* `POD_LATEST_IMAGE_TAG_CHECK, default is false.`
+* `CONFIG_POLICY_PATH, default is ./conf.json`
+
+### Policy configuration:
+Its based on json file in location - `CONFIG_POLICY_PATH`
+the policy updates at real time, after you change json file.
+the json looks like this:
+```json
+{
+  "pod": {
+    "pod_policy_enforcement": true,
+    "default_pod_policy_settings": {
+      "readiness_liveness": true,
+      "default_ns": true,
+      "latest_image_tag": false,
+      "run_as_non_root": false,
+      "resources": true
+    },
+    "custom_pod_policies": {
+	  "namespace-name": {
+        "readiness_liveness": false,
+        "default_ns": true,
+        "latest_image_tag": false,
+        "run_as_non_root": false,
+        "resources": false
+      }
+    }
+  }
+  // to be continued
+}
+```
+### Policy fields and validations
+under pod we have:
+* readiness_liveness, checks if your pod has liveness & readiness.
+* default_ns, checks that you dont try to deploy pods on default ns.
+* latest_image_tag, checks that you dont try to deploy latest image tag.
+* run_as_non_root, checks that you dont try to run as root.
+* resources, checks that you state your resource usage.
+
+**Note: you can set different policy for each ns**
 
 ## Light
 * It's written in Golang.
 
 ## You can run it anywhere
-* you can compile it to statically linked executable, for any OS. 
+* you can compile it to statically linked executable, for any OS.
 
 # State
 - [x] Pod policy impl.
-- [ ] Service policy impl.
+- [] Service policy impl.
 - [ ] Ingress policy impl.
 - [ ] Deployment policy impl.
 - [ ] DeploymentConfig policy impl.

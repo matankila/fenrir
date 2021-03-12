@@ -3,23 +3,25 @@ package middleware
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/matankila/fenrir/config"
+	"github.com/matankila/fenrir/logger"
 	"go.uber.org/zap"
 )
 
-func NewLoggingMid(logger *zap.Logger) fiber.Handler {
+func NewLoggingMid() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		l := logger.GetLogger(logger.Default)
 		req := config.RequestInfo{
 			Method: c.Method(),
 			Url:    string(c.Request().RequestURI()),
 			Ip:     c.IP(),
 		}
 
-		logger.Info("start",
-			             zap.Any("requestInfo", req),
-			             zap.String("uid", c.Get(fiber.HeaderXRequestID)))
-		defer logger.Info("finish",
-								zap.Any("requestInfo", req),
-								zap.String("uid", c.Get(fiber.HeaderXRequestID)))
+		l.Info("start",
+			zap.Any("requestInfo", req),
+			zap.String("uid", c.Get(fiber.HeaderXRequestID)))
+		defer l.Info("finish",
+			zap.Any("requestInfo", req),
+			zap.String("uid", c.Get(fiber.HeaderXRequestID)))
 
 		return c.Next()
 	}

@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/matankila/fenrir/config"
 	"github.com/matankila/fenrir/endpoints"
+	"github.com/matankila/fenrir/logger"
 	"github.com/matankila/fenrir/middleware"
 	"go.uber.org/zap"
 	"sync"
@@ -17,7 +18,8 @@ var (
 	}
 )
 
-func InitApp(ep endpoints.Endpoints, logger *zap.Logger)*fiber.App  {
+func InitApp(ep endpoints.Endpoints) *fiber.App {
+	l := logger.GetLogger(logger.Default)
 	app := fiber.New(fiber.Config{
 		ErrorHandler: func(c *fiber.Ctx, err error) error {
 			code := fiber.StatusInternalServerError
@@ -30,15 +32,15 @@ func InitApp(ep endpoints.Endpoints, logger *zap.Logger)*fiber.App  {
 			req.Method = c.Method()
 			req.Ip = c.IP()
 			req.Url = string(c.Request().RequestURI())
-			logger.Error(err.Error(),
-						zap.String("uid", c.Get(fiber.HeaderXRequestID)),
-						zap.Any("requestInfo", req))
+			l.Error(err.Error(),
+				zap.String("uid", c.Get(fiber.HeaderXRequestID)),
+				zap.Any("requestInfo", req))
 			pool.Put(req)
 			return c.Status(code).JSON(fiber.Map{"error": true, "msg": err.Error()})
 		},
 	})
 	app.Use(middleware.NewUuidMid())
-	app.Use(middleware.NewLoggingMid(logger))
+	app.Use(middleware.NewLoggingMid())
 	app.Post("/validate", ep.Validate)
 	app.Get("/health", ep.Health)
 

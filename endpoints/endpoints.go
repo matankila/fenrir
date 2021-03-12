@@ -3,13 +3,14 @@ package endpoints
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/matankila/fenrir/config"
+	"github.com/matankila/fenrir/logger"
 	"github.com/matankila/fenrir/service"
 	"go.uber.org/zap"
 	"k8s.io/api/admission/v1beta1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/types"
 	"net/http"
 	"sync"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type Endpoint func(*fiber.Ctx) error
@@ -48,8 +49,8 @@ var (
 	errPool = sync.Pool{
 		New: func() interface{} {
 			return &v1beta1.AdmissionResponse{
-				Allowed:          false,
-				Result:           &metav1.Status{},
+				Allowed: false,
+				Result:  &metav1.Status{},
 			}
 		},
 	}
@@ -74,6 +75,7 @@ func makeHealthEndpoint(s service.Service) Endpoint {
 func makeValidationEndpoint(s service.Service) Endpoint {
 	return func(c *fiber.Ctx) error {
 		var request v1beta1.AdmissionReview
+		l := logger.GetLogger(logger.Default)
 
 		if err := c.BodyParser(&request); err != nil {
 			return err
@@ -92,7 +94,7 @@ func makeValidationEndpoint(s service.Service) Endpoint {
 				req = request.Request.UID
 			}
 
-			s.GetLogger().Error(err.Error(),
+			l.Error(err.Error(),
 				zap.String("uid", c.Get(fiber.HeaderXRequestID)),
 				zap.Any("requestInfo", r))
 			res := errPool.Get().(*v1beta1.AdmissionResponse)
@@ -105,4 +107,3 @@ func makeValidationEndpoint(s service.Service) Endpoint {
 		return c.JSON(respValid)
 	}
 }
-
