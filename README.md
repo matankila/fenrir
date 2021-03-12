@@ -34,7 +34,7 @@ the json looks like this:
       "resources": true
     },
     "custom_pod_policies": {
-	  "namespace-name": {
+      "namespace-name": {
         "readiness_liveness": false,
         "default_ns": true,
         "latest_image_tag": false,
