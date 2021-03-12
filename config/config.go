@@ -40,7 +40,6 @@ func (p *PodPolicySettings) policy() {}
 
 type Configuration interface {
 	Load(path string) error
-	Get() Config
 }
 
 func (c *AutoConfigure) Load(path string) error {
