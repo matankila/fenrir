@@ -6,24 +6,6 @@ import (
 	"sync"
 )
 
-var (
-	FallBackConf = AutoConfigure{
-		config: Config{
-			Pod: Pod{
-				PodPolicyEnforcement: true,
-				CustomPodPolicies:    map[Namespace]PodPolicySettings{},
-				DefaultPodPolicySettings: PodPolicySettings{
-					Resources:         true,
-					ReadinessLiveness: true,
-					DefaultNs:         true,
-					LatestImageTag:    false,
-					RunAsNonRoot:      false,
-				},
-			},
-		},
-	}
-)
-
 type Namespace string
 
 type AutoConfigure struct {
