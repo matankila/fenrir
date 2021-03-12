@@ -43,16 +43,15 @@ the json looks like this:
       }
     }
   }
-  // to be continued
 }
 ```
 ### Policy fields and validations
 under pod we have:
-* readiness_liveness, checks if your pod has liveness & readiness.
-* default_ns, checks that you dont try to deploy pods on default ns.
-* latest_image_tag, checks that you dont try to deploy latest image tag.
-* run_as_non_root, checks that you dont try to run as root.
-* resources, checks that you state your resource usage.
+* **readiness_liveness -** checks if your pod has liveness & readiness.
+* **default_ns -** checks that you dont try to deploy pods on default ns.
+* **latest_image_tag -** checks that you dont try to deploy latest image tag.
+* **run_as_non_root -** checks that you dont try to run as root.
+* **resources -** checks that you state your resource usage.
 
 **Note: you can set different policy for each ns**
 
