@@ -39,10 +39,14 @@ func (w Watcher) Watch() {
 				case fsnotify.Write:
 					if err := (w.actionMap[fsnotify.Write])(w.FilePath); err != nil {
 						l.Error(err.Error())
+					} else {
+						l.Info("file write detected...")
 					}
 				case fsnotify.Create:
 					if err := (w.actionMap[fsnotify.Create])(w.FilePath); err != nil {
 						l.Error(err.Error())
+					} else {
+						l.Info("file creation detected...")
 					}
 				}
 			// watch for errors

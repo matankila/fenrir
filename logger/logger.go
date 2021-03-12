@@ -50,6 +50,8 @@ func initLogger(loggerName string) *zap.Logger {
 	return logger
 }
 
+// it inits the logger factory
+// this function returns a channel, you must close before the program finishes.
 func InitFactory() chan struct{} {
 	l[Default.String()] = initLogger(config.DefaultLoggerName)
 	l[Watcher.String()] = initLogger(config.WatcherLoggerName)
