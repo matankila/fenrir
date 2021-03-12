@@ -20,8 +20,10 @@ the admission controller is configurable:
 
 ### Policy configuration:
 Its based on json file in location - `CONFIG_POLICY_PATH`
-the policy updates at real time, after you change json file.
-the json looks like this:
+</br>
+The policy updates at real time, after you change json file.
+
+**json policy sample:**
 ```json
 {
   "pod": {
@@ -45,6 +47,7 @@ the json looks like this:
   }
 }
 ```
+
 ### Policy fields and validations
 under pod we have:
 * **readiness_liveness -** checks if your pod has liveness & readiness.
@@ -63,7 +66,7 @@ under pod we have:
 
 # State
 - [x] Pod policy impl.
-- [] Service policy impl.
+- [ ] Service policy impl.
 - [ ] Ingress policy impl.
 - [ ] Deployment policy impl.
 - [ ] DeploymentConfig policy impl.
