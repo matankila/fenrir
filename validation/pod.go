@@ -11,14 +11,14 @@ import (
 func IsPodValid(rawObj []byte, ns string) error {
 	var pod v1.Pod
 	conf := config.FallBackConf.Get()
-	customPodPolicies := conf.Pod.CustomPodPolicies
-	policy := conf.Pod.DefaultPodPolicySettings
+	customPodPolicies := conf.Pod.CustomPolicies
+	policy := conf.Pod.DefaultPolicy
 	if v, ok := customPodPolicies[config.Namespace(ns)]; ok {
 		policy = v
 	}
 
 	// if pod policy is off\ false, skip.
-	if !conf.Pod.PodPolicyEnforcement {
+	if !conf.Pod.PolicyEnforcement {
 		return nil
 	}
 

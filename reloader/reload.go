@@ -6,17 +6,17 @@ import (
 	"github.com/matankila/fenrir/watcher"
 )
 
-type Reloader struct {
+type Reload struct {
 	w watcher.Watcher
 }
 
-func New(c config.Configuration, filepath string) Reloader {
+func New(c config.Configuration, filepath string) Reload {
 	reloadActionMap := watcher.ActionMap{fsnotify.Create: c.Load, fsnotify.Write: c.Load}
-	return Reloader{
+	return Reload{
 		w: watcher.New(filepath, reloadActionMap),
 	}
 }
 
-func (r Reloader) Run() {
+func (r Reload) Run() {
 	go r.w.Watch()
 }

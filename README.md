@@ -27,23 +27,21 @@ The policy updates at real time, after you change json file.
 ```json
 {
   "pod": {
-    "pod_policy_enforcement": true,
-    "default_pod_policy_settings": {
+    "policy_enforcement": true,
+    "default_policy": {
       "readiness_liveness": true,
       "default_ns": true,
       "latest_image_tag": false,
-      "run_as_non_root": false,
-      "resources": true
+      "run_as_non_root": false
     },
-    "custom_pod_policies": {
-      "namespace-name": {
-        "readiness_liveness": false,
-        "default_ns": true,
-        "latest_image_tag": false,
-        "run_as_non_root": false,
-        "resources": false
-      }
-    }
+    "custom_policies": {}
+  },
+  "service": {
+    "policy_enforcement": true,
+    "default_policy": {
+      "load_balancer": true
+    },
+    "custom_policies": {}
   }
 }
 ```
@@ -56,6 +54,11 @@ under pod we have:
 * **run_as_non_root -** checks that you dont try to run as root.
 * **resources -** checks that you state your resource usage.
 
+
+uder service we have:
+</br>
+* **load_balancer -** checks if service is of type LoadBalancer.
+
 **Note: you can set different policy for each ns**
 
 ## Light
@@ -66,7 +69,7 @@ under pod we have:
 
 # State
 - [x] Pod policy impl.
-- [ ] Service policy impl.
+- [x] Service policy impl.
 - [ ] Ingress policy impl.
 - [ ] Deployment policy impl.
 - [ ] DeploymentConfig policy impl.

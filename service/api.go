@@ -30,6 +30,10 @@ func (s service) Validate(req v1beta1.AdmissionReview) error {
 		return err
 	}
 
+	if err := validation.IsServiceValid(rawObj, req.Request.Namespace); err != nil {
+		return err
+	}
+
 	return nil
 }
 

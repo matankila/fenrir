@@ -14,17 +14,28 @@ type AutoConfigure struct {
 }
 
 type Config struct {
-	Pod Pod `json:"pod"`
+	Pod     Pod     `json:"pod"`
+	Service Service `json:"service"`
+}
+
+type Service struct {
+	PolicyEnforcement bool                        `json:"policy_enforcement"`
+	DefaultPolicy     ServicePolicy               `json:"default_policy"`
+	CustomPolicies    map[Namespace]ServicePolicy `json:"custom_policies"`
 }
 
 type Pod struct {
-	PodPolicyEnforcement     bool                            `json:"pod_policy_enforcement"`
-	DefaultPodPolicySettings PodPolicySettings               `json:"default_pod_policy_settings"`
-	CustomPodPolicies        map[Namespace]PodPolicySettings `json:"custom_pod_policies"`
+	PolicyEnforcement bool                    `json:"policy_enforcement"`
+	DefaultPolicy     PodPolicy               `json:"default_policy"`
+	CustomPolicies    map[Namespace]PodPolicy `json:"custom_policies"`
+}
+
+type ServicePolicy struct {
+	LoadBalancer bool `json:"load_balancer"`
 }
 
 // pod policy settings, if not set default is false
-type PodPolicySettings struct {
+type PodPolicy struct {
 	ReadinessLiveness bool `json:"readiness_liveness"`
 	Resources         bool `json:"resources"`
 	DefaultNs         bool `json:"default_ns"`
@@ -36,7 +47,7 @@ type Policy interface {
 	policy()
 }
 
-func (p *PodPolicySettings) policy() {}
+func (p *PodPolicy) policy() {}
 
 type Configuration interface {
 	Load(path string) error
