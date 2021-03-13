@@ -70,6 +70,7 @@ The policy updates at real time, after you change json file.
 * you can compile it to statically linked executable, for any OS.
 
 # Features
+- [x] Support graceful shutdown.
 - [x] Support policy file.
 - [x] Support live changes in policy. 
 - [x] Pod policy impl.
