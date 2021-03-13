@@ -39,7 +39,8 @@ The policy updates at real time, after you change json file.
   "service": {
     "policy_enforcement": true,
     "default_policy": {
-      "load_balancer": true
+      "load_balancer": true,
+      "default_ns": true
     },
     "custom_policies": {}
   }
@@ -47,7 +48,7 @@ The policy updates at real time, after you change json file.
 ```
 
 ### Policy fields and validations
-under pod we have:
+**under pod we have:**
 * **readiness_liveness -** checks if your pod has liveness & readiness.
 * **default_ns -** checks that you dont try to deploy pods on default ns.
 * **latest_image_tag -** checks that you dont try to deploy latest image tag.
@@ -55,11 +56,12 @@ under pod we have:
 * **resources -** checks that you state your resource usage.
 
 
-uder service we have:
+**uder service we have:**
 </br>
 * **load_balancer -** checks if service is of type LoadBalancer.
+* **default_ns -** checks that you dont try to deploy pods on default ns.
 
-**Note: you can set different policy for each ns**
+###Note: you can set different policy for each ns
 
 ## Light
 * It's written in Golang.
@@ -67,7 +69,9 @@ uder service we have:
 ## You can run it anywhere
 * you can compile it to statically linked executable, for any OS.
 
-# State
+# Features
+- [x] Support policy file.
+- [x] Support live changes in policy. 
 - [x] Pod policy impl.
 - [x] Service policy impl.
 - [ ] Ingress policy impl.

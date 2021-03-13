@@ -26,12 +26,11 @@ func (s service) Validate(req v1beta1.AdmissionReview) error {
 	}
 
 	rawObj := req.Request.Object.Raw
-	if err := validation.IsPodValid(rawObj, req.Request.Namespace); err != nil {
-		return err
-	}
-
-	if err := validation.IsServiceValid(rawObj, req.Request.Namespace); err != nil {
-		return err
+	l := validation.GetValidators()
+	for _, v := range l {
+		if err := v.IsValid(rawObj, req.Request.Namespace); err != nil {
+			return err
+		}
 	}
 
 	return nil

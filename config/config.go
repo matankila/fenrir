@@ -32,6 +32,7 @@ type Pod struct {
 
 type ServicePolicy struct {
 	LoadBalancer bool `json:"load_balancer"`
+	DefaultNs    bool `json:"default_ns"`
 }
 
 // pod policy settings, if not set default is false

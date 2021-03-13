@@ -26,6 +26,7 @@ var (
 				PolicyEnforcement: true,
 				DefaultPolicy: ServicePolicy{
 					LoadBalancer: true,
+					DefaultNs:    true,
 				},
 				CustomPolicies: map[Namespace]ServicePolicy{},
 			},

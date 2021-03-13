@@ -7,8 +7,10 @@ import (
 	"strings"
 )
 
+type Pod struct{}
+
 // this function checks if pod settings are valid according to set policy.
-func IsPodValid(rawObj []byte, ns string) error {
+func (p Pod) IsValid(rawObj []byte, ns string) error {
 	var pod v1.Pod
 	conf := config.FallBackConf.Get()
 	customPodPolicies := conf.Pod.CustomPolicies

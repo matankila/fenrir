@@ -7,7 +7,9 @@ import (
 	"strings"
 )
 
-func IsServiceValid(rawObj []byte, ns string) error {
+type Service struct{}
+
+func (s Service) IsValid(rawObj []byte, ns string) error {
 	var service v1.Service
 	conf := config.FallBackConf.Get()
 	customPodPolicies := conf.Service.CustomPolicies
@@ -23,6 +25,13 @@ func IsServiceValid(rawObj []byte, ns string) error {
 	// if cannot be serialized to service, skip.
 	if err := json.Unmarshal(rawObj, &service); err != nil {
 		return nil
+	}
+
+	// check ns settings
+	if policy.DefaultNs {
+		if service.Namespace == config.DefaultNs {
+			return config.RestrictedNamespace
+		}
 	}
 
 	// load balancers are costs alot of money, not always secure and tightly link to cloud provider.
