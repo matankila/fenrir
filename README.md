@@ -61,7 +61,7 @@ The policy updates at real time, after you change json file.
 * **load_balancer -** checks if service is of type LoadBalancer.
 * **default_ns -** checks that you dont try to deploy pods on default ns.
 
-###Note: you can set different policy for each ns
+### Note: you can set different policy for each ns
 
 ## Light
 * It's written in Golang.
