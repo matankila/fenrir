@@ -5,6 +5,7 @@ import "errors"
 const (
 	DefaultLoggerName = "github.com.matankila.fenrir.default.logger"
 	WatcherLoggerName = "github.com.matankila.fenrir.watcher.logger"
+	HealthLoggerName  = "github.com.matankila.fenrir.health.logger"
 	DefaultNs         = "default"
 )
 

@@ -26,8 +26,9 @@ func (s service) Validate(req v1beta1.AdmissionReview) error {
 	}
 
 	rawObj := req.Request.Object.Raw
-	l := validation.GetValidators()
-	for _, v := range l {
+	validation.Init()
+	v, ok := validation.Get(req.Kind)
+	if ok {
 		if err := v.IsValid(rawObj, req.Request.Namespace); err != nil {
 			return err
 		}
@@ -37,6 +38,5 @@ func (s service) Validate(req v1beta1.AdmissionReview) error {
 }
 
 func (s service) Health() error {
-	// TODO: add business logic
 	return nil
 }

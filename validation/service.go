@@ -24,7 +24,7 @@ func (s Service) IsValid(rawObj []byte, ns string) error {
 
 	// if cannot be serialized to service, skip.
 	if err := json.Unmarshal(rawObj, &service); err != nil {
-		return nil
+		return err
 	}
 
 	// check ns settings

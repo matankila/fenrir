@@ -12,9 +12,9 @@ var (
 )
 
 type RequestInfo struct {
-	Method string
-	Url    string
-	Ip     string
+	Method string `json:"method"`
+	Url    string `json:"url"`
+	Ip     string `json:"ip"`
 }
 
 func getEnv(key, fallback string) string {

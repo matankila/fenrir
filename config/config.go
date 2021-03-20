@@ -44,12 +44,6 @@ type PodPolicy struct {
 	RunAsNonRoot      bool `json:"run_as_non_root"`
 }
 
-type Policy interface {
-	policy()
-}
-
-func (p *PodPolicy) policy() {}
-
 type Configuration interface {
 	Load(path string) error
 }

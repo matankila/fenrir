@@ -6,19 +6,25 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-type loggerFactory map[string]*zap.Logger
+type loggerFactory map[Logger]*zap.Logger
 type Logger interface {
 	String() string
 }
 type WatcherLogger struct{}
 type DefaultLogger struct{}
+type HealthLogger struct{}
 
 var (
 	l       = loggerFactory{}
 	Default = DefaultLogger{}
 	Watcher = WatcherLogger{}
+	Health  = HealthLogger{}
 	done    = make(chan struct{})
 )
+
+func (h HealthLogger) String() string {
+	return "health"
+}
 
 func (d DefaultLogger) String() string {
 	return "default"
@@ -53,8 +59,9 @@ func initLogger(loggerName string) *zap.Logger {
 // it inits the logger factory
 // this function returns a channel, you must close before the program finishes.
 func InitFactory() chan struct{} {
-	l[Default.String()] = initLogger(config.DefaultLoggerName)
-	l[Watcher.String()] = initLogger(config.WatcherLoggerName)
+	l[Default] = initLogger(config.DefaultLoggerName)
+	l[Watcher] = initLogger(config.WatcherLoggerName)
+	l[Health] = initLogger(config.HealthLoggerName)
 
 	// waits for channel to be closed and sync all loggers
 	go func() {
@@ -68,5 +75,5 @@ func InitFactory() chan struct{} {
 }
 
 func GetLogger(logger Logger) *zap.Logger {
-	return l[logger.String()]
+	return l[logger]
 }

@@ -8,14 +8,17 @@ type Validator interface {
 
 var (
 	o sync.Once
-	l = []Validator{}
+	l = map[string]Validator{}
 )
 
-func GetValidators() []Validator {
+func Init() {
 	o.Do(func() {
-		l = append(l, Pod{})
-		l = append(l, Service{})
+		l["Pod"] = Pod{}
+		l["Service"] = Service{}
 	})
+}
 
-	return l
+func Get(validator string) (Validator, bool) {
+	v, ok := l[validator]
+	return v, ok
 }

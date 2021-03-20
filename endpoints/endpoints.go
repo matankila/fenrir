@@ -54,10 +54,21 @@ var (
 			}
 		},
 	}
+	reqInfoPool = sync.Pool{
+		New: func() interface{} {
+			return &config.RequestInfo{}
+		},
+	}
 )
 
 func makeHealthEndpoint(s service.Service) Endpoint {
 	return func(c *fiber.Ctx) error {
+		l := logger.GetLogger(logger.Health)
+		req := reqInfoPool.Get().(*config.RequestInfo)
+		defer reqInfoPool.Put(req)
+		req.Method = c.Method()
+		req.Ip = c.IP()
+		req.Url = string(c.Request().RequestURI())
 		resp := pool.Get().(*HealthResp)
 		defer pool.Put(resp)
 		resp.Ok = true
@@ -65,9 +76,11 @@ func makeHealthEndpoint(s service.Service) Endpoint {
 		err := s.Health()
 		if err != nil {
 			resp.Ok = false
+			l.Error(err.Error(), zap.Any("requestInfo", req), zap.String("uid", c.Get(fiber.HeaderXRequestID)))
 			return c.Status(http.StatusInternalServerError).JSON(resp)
 		}
 
+		l.Info("ok", zap.Any("requestInfo", req), zap.String("uid", c.Get(fiber.HeaderXRequestID)))
 		return c.JSON(resp)
 	}
 }
@@ -84,11 +97,11 @@ func makeValidationEndpoint(s service.Service) Endpoint {
 		err := s.Validate(request)
 		if err != nil {
 			var req types.UID
-			r := config.RequestInfo{
-				Method: c.Method(),
-				Url:    string(c.Request().RequestURI()),
-				Ip:     c.IP(),
-			}
+			r := reqInfoPool.Get().(*config.RequestInfo)
+			defer reqInfoPool.Put(req)
+			r.Method = c.Method()
+			r.Ip = c.IP()
+			r.Url = string(c.Request().RequestURI())
 
 			if request.Request != nil {
 				req = request.Request.UID
