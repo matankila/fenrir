@@ -1,0 +1,20 @@
+{
+  "pod": {
+    "policy_enforcement": true,
+    "default_policy": {
+      "readiness_liveness": true,
+      "default_ns": true,
+      "latest_image_tag": false,
+      "run_as_non_root": false
+    },
+    "custom_policies": {}
+  },
+  "service": {
+    "policy_enforcement": true,
+    "default_policy": {
+      "load_balancer": true,
+      "default_ns": true
+    },
+    "custom_policies": {}
+  }
+}
