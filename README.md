@@ -75,7 +75,14 @@ The policy updates at real time, after you change json file.
 - [x] Support live changes in policy. 
 - [x] Pod policy impl.
 - [x] Service policy impl.
-- [ ] Ingress policy impl.
+- [x] Multiple loggers support (watcher, default, health).
 - [ ] Deployment policy impl.
 - [ ] DeploymentConfig policy impl.
-- [ ] Route policy impl.
+  
+As of now there is no need in policy for ingress / route (openshift).
+
+# How to compile & run
+* Clone.
+* cd to folder.
+* go build github.com/matankila/fenrir/cmd.
+* run './main' (linux) / './main.exe' (win).
